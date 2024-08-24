@@ -17,9 +17,9 @@ Route::controller(AuthController::class)
         Route::get('me', [AuthController::class, 'me']);
     });
 
-Route::controller(SubscriberController::class)
+Route::middleware('auth:web')->controller(SubscriberController::class)
     ->group(function () {
-        //TODO: add subscriber endpoints
+        Route::get('subscribers', [SubscriberController::class, 'index']);
     });
 
 Route::controller(ArticleController::class)
