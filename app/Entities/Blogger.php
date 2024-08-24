@@ -19,6 +19,9 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class Blogger extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+    protected $primaryKey = 'uuid';
+
+    protected $keyType = 'string';
 
     /**
      * @ORM\Column(type="string", length=50, unique=true)
@@ -57,7 +60,7 @@ class Blogger extends Authenticatable implements JWTSubject
 
     public function getJWTIdentifier()
     {
-        return 'uuid';
+        return $this->uuid;
     }
 
     public function getJWTCustomClaims()
