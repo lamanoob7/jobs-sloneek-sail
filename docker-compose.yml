@@ -78,6 +78,15 @@ services:
                 - 'http://localhost:9000/minio/health/live'
             retries: 3
             timeout: 5s
+    adminer:
+        image: adminer
+        ports:
+            - 8080:8080
+        depends_on:
+            - pgsql
+        networks:
+            - sail
+
 networks:
     sail:
         driver: bridge

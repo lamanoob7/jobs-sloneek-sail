@@ -11,7 +11,10 @@ Route::get('/', [HomeController::class, 'getVersion']);
 
 Route::controller(AuthController::class)
     ->group(function () {
-        //TODO: add auth endpoints
+        Route::post('login', [AuthController::class, 'login']);
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::post('refresh', [AuthController::class, 'refresh']);
+        Route::get('me', [AuthController::class, 'me']);
     });
 
 Route::controller(SubscriberController::class)
@@ -28,3 +31,6 @@ Route::controller(ArticleCategoryController::class)
     ->group(function () {
         //TODO: add article category endpoints
     });
+
+
+    

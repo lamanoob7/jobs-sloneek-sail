@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240726115010 extends AbstractMigration
+final class Version20240824123348 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,13 +20,17 @@ final class Version20240726115010 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE bloggers (uuid UUID NOT NULL, created TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, removed TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(uuid))');
+        $this->addSql('ALTER TABLE bloggers ADD username VARCHAR(50) NOT NULL');
+        $this->addSql('ALTER TABLE bloggers ADD password_hash VARCHAR(255) NOT NULL');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_55A2B56FF85E0677 ON bloggers (username)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('DROP TABLE bloggers');
+        $this->addSql('DROP INDEX UNIQ_55A2B56FF85E0677');
+        $this->addSql('ALTER TABLE bloggers DROP username');
+        $this->addSql('ALTER TABLE bloggers DROP password_hash');
     }
 }
