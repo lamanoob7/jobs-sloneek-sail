@@ -2,19 +2,25 @@
 
 namespace Database\Seeders;
 
+use App\Factories\ArticleCategoryFactory;
 use App\Factories\SubscriberFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     const SUBSCRIBER_AMOUNT = 100;
+    const ARTICLE_CATEGORY_AMOUNT = 15;
 
     /** @var SubscriberFactory */
     private $subscriberFactory;
 
-    public function __construct(SubscriberFactory $subscriberFactory)
+    /** @var ArticleCategoryFactory */
+    private $articleCategoryFactory;
+
+    public function __construct(SubscriberFactory $subscriberFactory, ArticleCategoryFactory $articleCategoryFactory)
     {
         $this->subscriberFactory = $subscriberFactory;
+        $this->articleCategoryFactory = $articleCategoryFactory;
     }
     
     /**
@@ -23,6 +29,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->subscriberSeed();
+        $this->articleCategoryFactorySeed();
     }
 
     /**
@@ -41,6 +48,24 @@ class DatabaseSeeder extends Seeder
         }
         
         $this->subscriberFactory->flush();
+    }
+
+    /**
+     * Create seed of Subscribers
+     * 
+     * @return void
+     */
+    protected function articleCategoryFactorySeed() {
+        $this->articleCategoryFactory->setUseFlushAfterEachCall(false);
+
+        for($i=0; $i < self::ARTICLE_CATEGORY_AMOUNT; $i++){
+            $this->articleCategoryFactory->create(
+                title: fake()->unique()->word(),
+                createdAt:fake()->dateTime()
+            );
+        }
+        
+        $this->articleCategoryFactory->flush();
     }
 
 }

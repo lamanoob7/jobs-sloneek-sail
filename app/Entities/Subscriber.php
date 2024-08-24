@@ -2,11 +2,11 @@
 
 namespace App\Entities;
 
-use App\EntityRepositories\BloggerRepository;
+use App\EntityRepositories\SubscriberRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=BloggerRepository::class)
+ * @ORM\Entity(repositoryClass=SubscriberRepository::class)
  */
 class Subscriber extends BaseEntity
 {

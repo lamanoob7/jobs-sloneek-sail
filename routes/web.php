@@ -22,9 +22,9 @@ Route::middleware('auth:web')->controller(SubscriberController::class)
         Route::get('subscribers', [SubscriberController::class, 'index']);
     });
 
-Route::controller(ArticleController::class)
+Route::middleware('auth:web')->controller(ArticleController::class)
     ->group(function () {
-        //TODO: add article endpoints
+        Route::get('article-categories', [ArticleCategoryController::class, 'index']);
     });
 
 Route::controller(ArticleCategoryController::class)
