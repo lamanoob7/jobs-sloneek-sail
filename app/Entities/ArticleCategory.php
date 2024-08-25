@@ -7,11 +7,12 @@ use App\EntityRepositories\ArticleCategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 
 /**
  * @ORM\Entity(repositoryClass=ArticleCategoryRepository::class)
  */
-class ArticleCategory extends BaseEntity
+class ArticleCategory extends BaseEntity implements JsonSerializable
 {
     /**
      * @ORM\Column(type="string", unique=true)
@@ -26,8 +27,14 @@ class ArticleCategory extends BaseEntity
      */
     private Collection $bloggers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="articleCategory")
+     */
+    private Collection $articles;
+
     public function __construct() {
         $this->bloggers = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     /**
@@ -66,5 +73,20 @@ class ArticleCategory extends BaseEntity
         }
 
         return $this;
+    }
+
+    /**
+     * Get the value of articles
+     */ 
+    public function getArticles()
+    {
+        return $this->articles;
+    }
+
+    public function jsonSerialize(): mixed {
+        return [
+            'id' => $this->getUuid(),
+            'title' => $this->getTitle()
+        ];
     }
 }

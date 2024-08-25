@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Entities\Subscriber;
 use Doctrine\ORM\EntityManagerInterface;
-use Illuminate\Http\Request;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Illuminate\Http\Request;
 
 class SubscriberController extends Controller
 {

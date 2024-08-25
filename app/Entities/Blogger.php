@@ -41,8 +41,14 @@ class Blogger extends Authenticatable implements JWTSubject
      */
     private Collection $articleCategories;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Article", mappedBy="blogger")
+     */
+    private Collection $articles;
+
     public function __construct() {
         $this->articleCategories = new ArrayCollection();
+        $this->articles = new ArrayCollection();
     }
 
     public function getUsername(): string
@@ -89,6 +95,11 @@ class Blogger extends Authenticatable implements JWTSubject
         }
 
         return $this;
+    }
+
+    public function getArticles()
+    {
+        return $this->articles;
     }
 
     public function getJWTIdentifier(): string

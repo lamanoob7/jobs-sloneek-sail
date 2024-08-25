@@ -24,12 +24,14 @@ Route::middleware('auth:web')->controller(SubscriberController::class)
 
 Route::middleware('auth:web')->controller(ArticleController::class)
     ->group(function () {
-        Route::get('article-categories', [ArticleCategoryController::class, 'index']);
+        Route::resources([
+            'articles' => ArticleController::class
+        ], ['except' => ['create', 'edit']]);
     });
 
-Route::controller(ArticleCategoryController::class)
+Route::middleware('auth:web')->controller(ArticleCategoryController::class)
     ->group(function () {
-        //TODO: add article category endpoints
+        Route::get('article-categories', [ArticleCategoryController::class, 'index']);
     });
 
 
