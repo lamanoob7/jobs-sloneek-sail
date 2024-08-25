@@ -28,7 +28,6 @@ final class Version20240824123348 extends AbstractMigration
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP INDEX UNIQ_55A2B56FF85E0677');
         $this->addSql('ALTER TABLE bloggers DROP username');
         $this->addSql('ALTER TABLE bloggers DROP password_hash');
