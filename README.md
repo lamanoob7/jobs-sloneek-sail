@@ -50,8 +50,12 @@
   $ ./vendor/bin/sail artisan doctrine:migrations:migrate
   ```
 
-  # Solution
+# Solution
 
-  ## Instalation
+## Instalation
 
 New sail from `https://laravel.com/docs/11.x/installation#docker-installation-using-sail`
+
+## Time & used methods
+
+

@@ -15,10 +15,13 @@ class ArticleFactory extends BaseFactory
      * @param string $email
      * @return Article
      */
-    public function create(string $title, string $abstract, string $text, Blogger $blogger, ArticleCategory $articleCategory, DateTime $createdAt = null): Article
+    public function create(string $title, string $abstract, string $text, Blogger $blogger = null, ArticleCategory $articleCategory, DateTime $createdAt = null): Article
     {
         $article = new Article();
         $article->setTitle($title);
+        $article->setAbstract($abstract);
+        $article->setText($text);
+        $article->setArticleCategory($articleCategory);
         $article->setCreated($createdAt ?? new DateTime());
 
         // Persist the entity

@@ -95,6 +95,8 @@ class ArticleController extends Controller
         $article = $this->entityManager->getRepository(Article::class)->find($id);
         if (!$article) {
             return response()->json(['message' => __('be.responses.notFound.article')], 404);
+        } elseif ($article->isDistributed()){
+            return response()->json(['message' => __('be.responses.notUpdatable.article')], 405);
         }
 
         $article
@@ -119,6 +121,8 @@ class ArticleController extends Controller
         $article = $this->entityManager->getRepository(Article::class)->find($id);
         if (!$article) {
             return response()->json(['message' => __('be.responses.notFound.article')], 404);
+        } elseif ($article->isDistributed()){
+            return response()->json(['message' => __('be.responses.notDeletable.article')], 405);
         }
 
         $this->entityManager->remove($article);

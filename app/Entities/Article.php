@@ -4,6 +4,7 @@ namespace App\Entities;
 
 use App\Entities\Blogger;
 use App\EntityRepositories\ArticleCategoryRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -45,6 +46,12 @@ class Article extends BaseEntity implements JsonSerializable
      * @var Blogger
      */
     private Blogger $blogger;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var DateTime
+     */
+    private DateTime $distributed;
 
     /**
      * Get the value of title
@@ -166,12 +173,49 @@ class Article extends BaseEntity implements JsonSerializable
         return $this;
     }
 
+    /**
+     * Is article distributed
+     *
+     * @return  bool
+     */ 
+    public function isDistributed()
+    {
+        var_dump($this->distributed);
+        return !empty($this->distributed);
+    }
+
+    /**
+     * Get the value of distributed
+     *
+     * @return  DateTime
+     */ 
+    public function getDistributed()
+    {
+        return $this->distributed;
+    }
+
+    /**
+     * Set the value of distributed
+     *
+     * @param  DateTime  $distributed
+     *
+     * @return  self
+     */ 
+    public function setDistributed(DateTime $distributed)
+    {
+        $this->distributed = $distributed;
+
+        return $this;
+    }
+
     public function jsonSerialize(): mixed {
         return [
             'id' => $this->getUuid(),
             'title' => $this->getTitle(),
             'abstract' => $this->getAbstract(),
             'text' => $this->getText(),
+            'isDistibuted' => $this->isDistributed(),
+            'distibuted' => $this->getDistributed(),
             'articleCategory' => $this->getArticleCategory()
         ];
     }
