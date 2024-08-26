@@ -8,9 +8,12 @@ use App\Entities\ArticleCategory;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ArticleController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $entityManager;
 
     public function __construct(EntityManagerInterface $entityManager)
@@ -53,13 +56,11 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        // $bloggerAuth = $request->user();
+        $blogger = $request->user();  // Get the authenticated Blogger
+        $articleCategory = $this->entityManager->getRepository(ArticleCategory::class)->find($request->article_category_id);
 
-        // if (!$bloggerAuth) {
-        //     return response()->json(['message' => 'Unauthorized'], 401);
-        // }
-
-        // $blogger = $this->entityManager->getRepository(Blogger::class)->find($bloggerAuth->getUuid());
+        // Authorize the action using the policy
+        $this->authorize('create', [Article::class, $articleCategory]);
         
         $articleCategory = $this->entityManager->getRepository(ArticleCategory::class)->find($request->article_category_id);
 
@@ -71,8 +72,8 @@ class ArticleController extends Controller
             ->setTitle($request->title)
             ->setAbstract($request->abstract)
             ->setText($request->text)
-            ->setArticleCategory($articleCategory);
-            // ->setBlogger($bloggerOrm); TODO
+            ->setArticleCategory($articleCategory)
+            ->setBlogger($blogger);
         $article->setCreated(new \DateTime());
 
         $this->entityManager->persist($article);
@@ -93,6 +94,10 @@ class ArticleController extends Controller
     public function update(Request $request, $id)
     {
         $article = $this->entityManager->getRepository(Article::class)->find($id);
+        
+        // Authorize the action using the policy
+        $this->authorize('update', [Article::class, $article]);
+
         if (!$article) {
             return response()->json(['message' => __('be.responses.notFound.article')], 404);
         } elseif ($article->isDistributed()){
@@ -119,6 +124,10 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = $this->entityManager->getRepository(Article::class)->find($id);
+        
+        // Authorize the action using the policy
+        $this->authorize('delete', [Article::class, $article]);
+
         if (!$article) {
             return response()->json(['message' => __('be.responses.notFound.article')], 404);
         } elseif ($article->isDistributed()){

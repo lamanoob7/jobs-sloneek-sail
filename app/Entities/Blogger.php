@@ -79,10 +79,7 @@ class Blogger extends Authenticatable implements JWTSubject
         return $this;
     }
 
-    /**
-     * @return ArticleCategory[]
-     */
-    public function getArticleCategories(): ArrayCollection
+    public function getArticleCategories(): Collection
     {
         return $this->articleCategories;
     }

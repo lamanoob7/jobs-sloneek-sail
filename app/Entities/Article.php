@@ -49,9 +49,9 @@ class Article extends BaseEntity implements JsonSerializable
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @var DateTime
+     * @var ?DateTime
      */
-    private DateTime $distributed;
+    private ?DateTime $distributed = null;
 
     /**
      * Get the value of title
@@ -180,16 +180,15 @@ class Article extends BaseEntity implements JsonSerializable
      */ 
     public function isDistributed()
     {
-        var_dump($this->distributed);
         return !empty($this->distributed);
     }
 
     /**
      * Get the value of distributed
      *
-     * @return  DateTime
+     * @return  ?DateTime
      */ 
-    public function getDistributed()
+    public function getDistributed() : ?DateTime
     {
         return $this->distributed;
     }
@@ -201,7 +200,7 @@ class Article extends BaseEntity implements JsonSerializable
      *
      * @return  self
      */ 
-    public function setDistributed(DateTime $distributed)
+    public function setDistributed(?DateTime $distributed)
     {
         $this->distributed = $distributed;
 
@@ -214,7 +213,6 @@ class Article extends BaseEntity implements JsonSerializable
             'title' => $this->getTitle(),
             'abstract' => $this->getAbstract(),
             'text' => $this->getText(),
-            'isDistibuted' => $this->isDistributed(),
             'distibuted' => $this->getDistributed(),
             'articleCategory' => $this->getArticleCategory()
         ];

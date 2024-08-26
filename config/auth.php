@@ -61,7 +61,7 @@ return [
 
     'providers' => [
         'bloggers' => [
-            'driver' => 'eloquent',
+            'driver' => 'doctrine',
             'model'  => env('AUTH_MODEL', \App\Entities\Blogger::class),
         ],
 
