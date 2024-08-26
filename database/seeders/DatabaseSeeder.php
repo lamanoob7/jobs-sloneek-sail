@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Entities\ArticleCategory;
+use App\Entities\Blogger;
 use App\Factories\ArticleCategoryFactory;
 use App\Factories\ArticleFactory;
 use App\Factories\BloggerFactory;
@@ -44,8 +45,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->subscriberSeed();
         $articleCategories = $this->articleCategoryFactorySeed();
-        $this->bloggerFactorySeed($articleCategories);
-        $this->articlesFactorySeed($articleCategories);
+        $bloggers = $this->bloggerFactorySeed($articleCategories);
+        $this->articlesFactorySeed($articleCategories, $bloggers);
     }
 
     /**
@@ -90,16 +91,17 @@ class DatabaseSeeder extends Seeder
     /**
      * Create seed of Subscribers
      * 
-     * @return void
+     * @return Blogger[]
      */
     protected function bloggerFactorySeed($articleCategories) {
         $this->bloggerFactory->setUseFlushAfterEachCall(false);
         
+        $bloggers = [];
         for($i=0; $i < self::BLOGGER_AMOUNT; $i++){
             $bloggerArticleCategories = $this->getRandomFields($articleCategories, self::BLOGGER_ARTICLE_CATEGORY_MAX_AMOUNT);
 
             $username = fake()->unique()->userName();
-            $this->bloggerFactory->create(
+            $bloggers[] = $this->bloggerFactory->create(
                 username: $username,
                 password: $username, // same as username only to allow easy test login
                 createdAt:fake()->dateTime(),
@@ -108,6 +110,7 @@ class DatabaseSeeder extends Seeder
         }
         
         $this->bloggerFactory->flush();
+        return $bloggers;
     }
 
     /**
@@ -115,18 +118,20 @@ class DatabaseSeeder extends Seeder
      * 
      * @return void
      */
-    protected function articlesFactorySeed($articleCategories) {
+    protected function articlesFactorySeed($articleCategories, $bloggers) {
         $this->articleFactory->setUseFlushAfterEachCall(false);
         
         for($i=0; $i < self::ARTICLE_AMOUNT; $i++){
             $randomArticleCategories = $this->getRandomFields($articleCategories, 1);
+            $randomBloggers = $this->getRandomFields($bloggers, 1);
 
             $this->articleFactory->create(
                 title: fake()->words(3, true),
                 abstract: fake()->paragraph(),
                 text: fake()->paragraphs(2, true),
                 createdAt:fake()->dateTime(),
-                articleCategory: $randomArticleCategories[0]
+                articleCategory: $randomArticleCategories[0],
+                blogger: $randomBloggers[0]
             );
         }
         

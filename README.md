@@ -1,4 +1,6 @@
-# Background
+# Job Task
+
+## Background
 
 - Potrebujeme vytvoriť REST API systém ktorý by distribuoval články od bloggerov ku odberateľom.
 - Odberateľov môže byť niekoľko desiatok tisíc, blogerov niekoľko desiatok.
@@ -10,7 +12,7 @@
 - Distribúcia prebieha formou emailu, kde sa zhrnú všetky články odovzdané pred uzávierkou do jedného emailu - nechceme
   spamovať odberateľov novým emailom pre každý nový článok.
 
-# Requirements
+## Requirements
 
 1. Pripraviť si Doctrine entities, Doctrine repositories, DB seeders pre Blogger, Subscriber, Article, ArticleCategory
 2. Pripraviť si autentifikáciu pre bloggerov, najlepšie pomocou Bearer JWT tokenov
@@ -20,17 +22,17 @@
 5. Pripraviť asyn funkcionalitu pre zhrnutie nových článkov do jedného emailu a jeho poslanie odberateľom po uzávierke -
    treba myslieť na performance
 
-# Nice to have
+## Nice to have
 
 1. Integration tests
 2. ...
 
-# Epilogue
+## Epilogue
 
 1. Reálne netreba rozposielať emaily skrz nejakú SMTP službu, stačí to mocknuť.
 2. Ako primárne kľúče používame UUID - je to už pripravené v kostre
 
-# Hints
+## Hints
 
 - project start (see for more info: https://laravel.com/docs/11.x#docker-installation-using-sail)
 
@@ -58,4 +60,20 @@ New sail from `https://laravel.com/docs/11.x/installation#docker-installation-us
 
 ## Time & used methods
 
+I have dedicated to this issue around 15 hours of my time.
 
+As one of the most biggest change for me was use ChatGPT as main tool, for creating code and getting know neccessary parts of Laravel and Doctrine.
+
+I also used stackoverflow and generraly internet to get some specific information for the issues I had.
+
+## Seeds
+
+`./vendor/bin/sail artisan db:seed`
+
+## Possible improvements
+
+- I didn't use Doctrine repositories as much as I should, but main difference would be passing into controllers not entityManager, but specific Entity repositories something similar to DatabaseSeeder
+
+- Due to exceeded time frame for this task I did not create Unit tests, but at least I created one test for email sending job  with mock. 
+
+- I probably did not make all places typehinted using PHP 8 annotation, but I used it in most places.
