@@ -1,66 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Job Task
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Background
 
-## About Laravel
+- Potrebujeme vytvoriť REST API systém ktorý by distribuoval články od bloggerov ku odberateľom.
+- Odberateľov môže byť niekoľko desiatok tisíc, blogerov niekoľko desiatok.
+- Aktívny prístup do systému majú len bloggeri skrz login, odberatelia ho nemajú..
+- Každy článok ma kategóriu, taktiež blogger prispieva článkami minimálne do jednej alebo viac kategorií. Blogger NEMÔŽE
+  vytvoriť článok v inej kategorií než ku ktorej je priradený.
+- Články sa distribuujú odberateľom 2x denne, po uzávierke ktorá je ráno o 11:00 a poobede o 17:00. Distribujú sa len
+  články ktoré ešte neboli distribuované.
+- Distribúcia prebieha formou emailu, kde sa zhrnú všetky články odovzdané pred uzávierkou do jedného emailu - nechceme
+  spamovať odberateľov novým emailom pre každý nový článok.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. Pripraviť si Doctrine entities, Doctrine repositories, DB seeders pre Blogger, Subscriber, Article, ArticleCategory
+2. Pripraviť si autentifikáciu pre bloggerov, najlepšie pomocou Bearer JWT tokenov
+3. Pripraviť si autorizáciu pre bloggerov, pozor dávať na vlastníctvo článkov a prístup do kategorií
+4. Pripraviť CRUD pre Articles (nedovoliť update/delete už distribuovaných článkov), GET pre ArticleCategory, GET
+   pre subscribers - myslieť na potencionálnu filtráciu
+5. Pripraviť asyn funkcionalitu pre zhrnutie nových článkov do jedného emailu a jeho poslanie odberateľom po uzávierke -
+   treba myslieť na performance
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Nice to have
 
-## Learning Laravel
+1. Integration tests
+2. ...
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Epilogue
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+1. Reálne netreba rozposielať emaily skrz nejakú SMTP službu, stačí to mocknuť.
+2. Ako primárne kľúče používame UUID - je to už pripravené v kostre
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Hints
 
-## Laravel Sponsors
+- project start (see for more info: https://laravel.com/docs/11.x#docker-installation-using-sail)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+  ```bash
+  $ ./vendor/bin/sail up
+  ```
+  
+- generate migration in doctrine
 
-### Premium Partners
+  ```bash
+  $ ./vendor/bin/sail artisan doctrine:migrations:diff
+  ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+- apply migration in doctrine
 
-## Contributing
+  ```bash
+  $ ./vendor/bin/sail artisan doctrine:migrations:migrate
+  ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Solution
 
-## Code of Conduct
+## Instalation
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+New sail from `https://laravel.com/docs/11.x/installation#docker-installation-using-sail`
 
-## Security Vulnerabilities
+## Time & used methods
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+I have dedicated to this issue around 15 hours of my time.
 
-## License
+As one of the most biggest change for me was use ChatGPT as main tool, for creating code and getting know neccessary parts of Laravel and Doctrine.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+I also used stackoverflow and generraly internet to get some specific information for the issues I had.
+
+## Seeds
+
+`./vendor/bin/sail artisan db:seed`
+
+## Possible improvements
+
+- I didn't use Doctrine repositories as much as I should, but main difference would be passing into controllers not entityManager, but specific Entity repositories something similar to DatabaseSeeder
+
+- Due to exceeded time frame for this task I did not create Unit tests, but at least I created one test for email sending job  with mock. 
+
+- I probably did not make all places typehinted using PHP 8 annotation, but I used it in most places.
